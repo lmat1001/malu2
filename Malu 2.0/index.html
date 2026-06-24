@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para a Malu 🎁</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --wine: #6B2737;
+    --wine-deep: #4A1B27;
+    --gold: #C9A961;
+    --gold-light: #E5D5A8;
+    --cream: #F7F1E8;
+    --cream-warm: #FDF8F0;
+    --olive: #7A8B5C;
+    --blush: #E8B4B8;
+    --ink: #3A2A2E;
+    --shadow: rgba(74, 27, 39, 0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Quicksand', sans-serif;
+    background: var(--wine-deep);
+    color: var(--ink);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .display {
+    font-family: 'Cormorant Garamond', serif;
+  }
+
+  #app {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  /* ---------- STAGE / VITRINE FRAME ---------- */
+  .stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, var(--wine) 0%, var(--wine-deep) 100%);
+  }
+
+  .frame-border {
+    position: absolute;
+    inset: 18px;
+    border: 2px solid var(--gold);
+    border-radius: 24px;
+    pointer-events: none;
+    box-shadow:
+      inset 0 0 0 1px rgba(201, 169, 97, 0.3),
+      inset 0 0 40px rgba(201, 169, 97, 0.08);
+    z-index: 50;
+  }
+
+  .frame-border::before,
+  .frame-border::after,
+  .corner-tl, .corner-tr, .corner-bl, .corner-br {
+    content: '';
+    position: absolute;
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--gold);
+  }
+  .corner-tl { top: -2px; left: -2px; border-right: none; border-bottom: none; border-radius: 24px 0 0 0; }
+  .corner-tr { top: -2px; right: -2px; border-left: none; border-bottom: none; border-radius: 0 24px 0 0; }
+  .corner-bl { bottom: -2px; left: -2px; border-right: none; border-top: none; border-radius: 0 0 0 24px; }
+  .corner-br { bottom: -2px; right: -2px; border-left: none; border-top: none; border-radius: 0 0 24px 0; }
+
+  /* ---------- SCENE CONTAINER ---------- */
+  .scene-viewport {
+    position: relative;
+    width: min(92vw, 720px);
+    height: min(86vh, 820px);
+    background: var(--cream-warm);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px var(--shadow), 0 0 0 1px rgba(201,169,97,0.4);
+  }
+
+  .scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 32px;
+    text-align: center;
+    opacity: 0;
+    pointer-events: none;
+    transform: scale(1.04);
+    transition: opacity 0.7s ease, transform 0.8s ease;
+  }
+
+  .scene.active {
+    opacity: 1;
+    pointer-events: auto;
+    transform: scale(1);
+    z-index: 10;
+  }
+
+  .scene.leaving {
+    opacity: 0;
+    transform: scale(0.96);
+    z-index: 5;
+  }
+
+  /* ---------- SHARED TEXT STYLES ---------- */
+  .eyebrow {
+    font-size: 0.8rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--wine);
+    opacity: 0.65;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+
+  .scene-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600;
+    font-size: clamp(1.8rem, 5vw, 2.7rem);
+    color: var(--wine-deep);
+    line-height: 1.15;
+    margin-bottom: 14px;
+  }
+
+  .scene-sub {
+    font-size: 1.02rem;
+    color: var(--ink);
+    opacity: 0.75;
+    max-width: 440px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+  }
+
+  /* ---------- BUTTON ---------- */
+  .btn-advance {
+    font-family: 'Quicksand', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    color: var(--cream-warm);
+    background: var(--wine);
+    border: none;
+    padding: 15px 38px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(107, 39, 55, 0.35);
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .btn-advance:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 26px rgba(107, 39, 55, 0.45);
+    background: var(--wine-deep);
+  }
+  .btn-advance:active { transform: translateY(0); }
+  .btn-advance:focus-visible {
+    outline: 3px solid var(--gold);
+    outline-offset: 3px;
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: 1.5px solid var(--wine);
+    color: var(--wine);
+    box-shadow: none;
+  }
+  .btn-ghost:hover {
+    background: var(--wine);
+    color: var(--cream-warm);
+  }
+
+  /* ---------- PROGRESS DOTS ---------- */
+  .progress {
+    position: absolute;
+    bottom: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 60;
+  }
+  .progress .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: rgba(201, 169, 97, 0.3);
+    transition: all 0.4s ease;
+  }
+  .progress .dot.done {
+    background: var(--gold);
+    width: 18px;
+    border-radius: 4px;
+  }
+  .progress .dot.current {
+    background: var(--cream);
+    box-shadow: 0 0 0 3px rgba(247,241,232,0.25);
+  }
+
+  /* ---------- PAGE TURN OVERLAY ---------- */
+  .page-turn {
+    position: absolute;
+    inset: 0;
+    background: var(--wine-deep);
+    z-index: 40;
+    transform: scaleX(0);
+    transform-origin: left;
+    pointer-events: none;
+  }
+  .page-turn.animate {
+    animation: pageTurn 0.9s cubic-bezier(.76,0,.24,1);
+  }
+  @keyframes pageTurn {
+    0%   { transform: scaleX(0); transform-origin: left; }
+    50%  { transform: scaleX(1); transform-origin: left; }
+    50.01% { transform: scaleX(1); transform-origin: right; }
+    100% { transform: scaleX(0); transform-origin: right; }
+  }
+
+  /* ---------- UTILITY ---------- */
+  .hidden { display: none !important; }
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .scene { padding: 28px 20px; }
+    .frame-border { inset: 8px; border-radius: 18px; }
+    .scene-viewport { border-radius: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="app">
+  <div class="stage">
+    <div class="scene-viewport" id="viewport">
+      <!-- SCENES INJECTED HERE BY JS -->
+    </div>
+  </div>
+  <div class="frame-border">
+    <div class="corner-tl"></div>
+    <div class="corner-tr"></div>
+    <div class="corner-bl"></div>
+    <div class="corner-br"></div>
+  </div>
+  <div class="progress" id="progress"></div>
+  <div class="page-turn" id="pageTurn"></div>
+</div>
+
+<script src="scenes.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
